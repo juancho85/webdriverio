@@ -38,4 +38,5 @@ To run your tests, execute:
 $ wdio wdio.conf.js
 
 ```
-
+* Install wdio selenium standalone service to have wdio launch the seleniun server
+`npm install wdio-selenium-standalone-service --save-dev`
