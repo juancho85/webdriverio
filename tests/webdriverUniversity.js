@@ -7,18 +7,33 @@ describe('Verify whether webdriveruniversity links on homepage work correcly', f
         browser.url('/')
         const title = browser.getTitle();
         expect(title).to.equal('WebDriverUniversity.com');
-        console.log('Title is: ' + title); // Log navigation through the home page
-        browser.debug();
+
         browser.click('#contact-us');
-        browser.pause(3000); // Pause to see what is going on (value in milliseconds)
+        const tabIds = browser.getTabIds();
+        browser.switchTab(tabIds[1]);
+
+        const contactUsTitle = browser.getTitle();
+        expect(contactUsTitle).to.equal('WebDriver | Contact Us');
+
+        const contactUsUrl = browser.getUrl();
+        expect(contactUsUrl).to.include('Contact-Us', 'URL mismatch');
+        browser.close();
     });
 
     it('check that login button opens the login portal page', function(done) {
         browser.url('/');
-        browser.click('#login-portal');
         const title = browser.getTitle();
         title.should.equal('WebDriverUniversity.com');
-        console.log('Title is: ' + title);
-        browser.pause(3000);
+
+        browser.click('#login-portal');
+        const tabIds = browser.getTabIds();
+        browser.switchTab(tabIds[1]);
+
+        const LoginPortalTitle = browser.getTitle();
+        expect(LoginPortalTitle).to.equal('WebDriver | Login Portal');
+
+        const contactUsUrl = browser.getUrl();
+        expect(contactUsUrl).to.include('Login-Portal', 'URL mismatch');
+        browser.close();
     });
 });
