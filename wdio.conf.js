@@ -1,10 +1,5 @@
-var baseUrl;
-
-if(process.env.SERVER === 'prod') {
-    baseUrl = 'http://www.google.com';
-} else {
-    baseUrl = 'http://www.webdriveruniversity.com';
-}
+const baseUrl = process.env.SERVER === 'prod' ? 'http://www.google.com' : 'http://www.webdriveruniversity.com';
+const timeout = process.env.DEBUG ? 999999 : 10000;
 
 exports.config = {
     
@@ -88,7 +83,7 @@ exports.config = {
     baseUrl: baseUrl,
     //
     // Default timeout for all waitFor* commands.
-    waitforTimeout: 10000,
+    waitforTimeout: timeout,
     //
     // Default timeout in milliseconds for request
     // if Selenium Grid doesn't send response
@@ -136,7 +131,8 @@ exports.config = {
     // Options to be passed to Mocha.
     // See the full list at http://mochajs.org/
     mochaOpts: {
-        ui: 'bdd'
+        ui: 'bdd',
+        timeout: timeout
     },
     //
     // =====

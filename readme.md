@@ -42,7 +42,7 @@ $ wdio wdio.conf.js
 `npm install wdio-selenium-standalone-service --save-dev`
 
 * Run a specific test
-`npm test -- --spec=tests/ajaxClickTest.js`
+`npm test -- --spec=tests/ajaxClick.js`
 
 * Run the tests - Will use the wdio config file
 `npm test`
