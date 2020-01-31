@@ -40,3 +40,9 @@ $ wdio wdio.conf.js
 ```
 * Install wdio selenium standalone service to have wdio launch the seleniun server
 `npm install wdio-selenium-standalone-service --save-dev`
+
+* Run a specific test
+`npm test -- "--spec=tests/chai.js"`
+
+* Run the tests - Will use the wdio config file
+`npm test`
