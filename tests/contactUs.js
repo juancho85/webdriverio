@@ -22,8 +22,10 @@ describe('Test Contact Us form WebdriverUni', function() {
         2000,
         "No navigation to another page after contact us form submission"
     );
-    const reply = browser.isExisting('#contact_reply');
-    expect(reply).to.equal(true);
+    const successfulContactConfirmation = browser.isExisting('#contact_reply h1');
+    expect(successfulContactConfirmation, 'Successful submission message does not exist').to.be.true;
+    const successFullSubmissionText = browser.getText('#contact_reply h1');
+    expect(successFullSubmissionText).to.equal('Thank You for your Message!');
   });
 
   it('Should not be able to submit a successful submission via contact us form as all fields are required', function(done) {
@@ -31,15 +33,9 @@ describe('Test Contact Us form WebdriverUni', function() {
     browser.setValue("[name='last_name']", 'Pelota');
     browser.setValue("[name='email']", 'pepe@test.com');
     browser.click("[type='submit']");
-    browser.waitUntil(
-        function() {
-          return browser.getTitle() !== contactUsPageTitle
-        },
-        2000,
-        "No navigation to another page after contact us form submission"
-    );
-    const reply = browser.isExisting('#contact_reply');
-    expect(reply).to.equal(false);
+
+    const successfulContactConfirmation = browser.isExisting('#contact_reply h1');
+    expect(successfulContactConfirmation, 'Successful submission message does not exist').to.be.false;
   });
 
 
@@ -47,29 +43,17 @@ describe('Test Contact Us form WebdriverUni', function() {
     browser.setValue("[name='first_name']", 'Paola');
     browser.setValue("[name='email']", 'paola@test.com');
     browser.click("[type='submit']");
-    browser.waitUntil(
-        function() {
-          return browser.getTitle() !== contactUsPageTitle
-        },
-        2000,
-        "No navigation to another page after contact us form submission"
-    );
-    const reply = browser.isExisting('#contact_reply');
-    expect(reply).to.equal(false);
+
+    const successfulContactConfirmation = browser.isExisting('#contact_reply h1');
+    expect(successfulContactConfirmation, 'Successful submission message does not exist').to.be.false;
   });
 
   it('Should not be able to submit a successful submission via contact us form as all fields are required', function(done) {
     browser.setValue("[name='first_name']", 'Patricia');
     browser.setValue("[name='last_name']", 'Perales');
     browser.click("[type='submit']");
-    browser.waitUntil(
-        function() {
-          return browser.getTitle() !== contactUsPageTitle
-        },
-        2000,
-        "No navigation to another page after contact us form submission"
-    );
-    const reply = browser.isExisting('#contact_reply');
-    expect(reply).to.equal(false);
+
+    const errorText = browser.getText('body');
+    expect(errorText).to.include('Error: all fields are required');
   });
 });
