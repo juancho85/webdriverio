@@ -1,3 +1,4 @@
+const ContactUs_Page = require('../pageObjects/ContactUs_Page');
 const request = require('sync-request');
 
 beforeEach(function() {
@@ -8,43 +9,35 @@ describe('Test Contact Us form WebdriverUni', function() {
   const res = request('GET', 'https://jsonplaceholder.typicode.com/comments?postId=1');
   const contactUsDetails = JSON.parse(res.getBody().toString('utf8'));
 
-  const firstNameSelector = "[name='first_name']";
-  const lastNameSelector = "[name='last_name']";
-  const emailSelector = "[name='email']";
-  const commentsSelector = "[name='message']";
-  const submitSelector = "[type='submit']";
-  const successfulSubmissionsSelector = "#contact_reply h1";
-  const unsuccessfulSubmissionsSelector = "body";
-
   function setFirstName(firstName) {
-    browser.setValue(firstNameSelector, firstName);
+    return ContactUs_Page.firstName.setValue(firstName);
   }
 
   function setLastName(lastName) {
-    browser.setValue(lastNameSelector, lastName);
+    return ContactUs_Page.lastName.setValue(lastName);
   }
 
   function setEmailAddress(emailAddress) {
-    browser.setValue(emailSelector, emailAddress);
+    return ContactUs_Page.emailAddress.setValue(emailAddress);
   }
 
   function setComments(comments) {
-    browser.setValue(commentsSelector, comments);
+    return ContactUs_Page.comments.setValue(comments);
   }
 
   function clickSubmitButton() {
-    browser.click(submitSelector);
+    return ContactUs_Page.submitButton.click();
   }
 
   function confirmSuccessfulSubmissions() {
     const validateSubmissionHeader = browser.waitUntil(function () {
-      return browser.getText(successfulSubmissionsSelector) === 'Thank You for your Message!'
+      return ContactUs_Page.successfulSubmissionHeader.getText() === 'Thank You for your Message!'
     }, 3000);
     expect(validateSubmissionHeader, 'Successful submission message does not exist').to.be.true;
   }
 
   function confirmUnsuccessfulSubmissions() {
-    expect(browser.getText(unsuccessfulSubmissionsSelector)).to.include('Error: all fields are required');
+    expect(ContactUs_Page.unsuccessfulSubmissionHeader.getText()).to.include('Error: all fields are required');
   }
 
   contactUsDetails.forEach(function (contactUsDetail) {
