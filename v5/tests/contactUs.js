@@ -1,42 +1,23 @@
 const ContactUs_Page = require('../pageObjects/ContactUs_Page');
-const request = require('sync-request');
 
-beforeEach(function() {
-  browser.url('/Contact-Us/contactus.html');
+beforeEach(async() => {
+  await browser.url('/Contact-Us/contactus.html');
 });
 
-describe('Test Contact Us form WebdriverUni', function() {
-  const res = request('GET', 'https://jsonplaceholder.typicode.com/comments?postId=1');
-  const contactUsDetails = JSON.parse(res.getBody().toString('utf8'));
+describe('Test Contact Us form WebdriverUni', () => {
 
-  contactUsDetails.forEach(function (contactUsDetail) {
-    it('Should be able to submit a successful submission via contact us form', function(done) {
-      ContactUs_Page.submitFormWithData('Paco', 'Palotes', contactUsDetail.email, contactUsDetail.body);
-    });
+
+  it('Test 1: Should be able to submit a successful submission via contact us form', () => {
+    ContactUs_Page.submitFormWithData('Paco', 'Palotes', 'paco@palotes.com', 'Hello');
+    // TODO: Parametrize max timeouts: SMALL, MEDIUM, LARGE
+    ContactUs_Page.successfulSubmissionHeader.waitForDisplayed(3000);
+    expect(ContactUs_Page.successfulSumbissionHeaderText).to.equal("Thank You for your Message!");
   });
 
-
-  it('Should not be able to submit a successful submission via contact us form as all fields are required', function(done) {
-    ContactUs_Page.setFirstName('Paco');
-    ContactUs_Page.setLastName('Palotes');
-    ContactUs_Page.setEmailAddress('paco@palotes.com');
-    ContactUs_Page.clickSubmitButton();
-    ContactUs_Page.confirmUnsuccessfulSubmission();
-  });
-
-
-  it('Should not be able to submit a successful submission via contact us form as all fields are required', function(done) {
-    ContactUs_Page.setFirstName('Paola');
-    ContactUs_Page.setEmailAddress('paola@perales.com');
-    ContactUs_Page.setComments('A comment');
-    ContactUs_Page.clickSubmitButton();
-    ContactUs_Page.confirmUnsuccessfulSubmission();
-  });
-
-  it('Should not be able to submit a successful submission via contact us form as all fields are required', function(done) {
+  it('Test 2: Should not be able to submit a successful submission via contact us form as all fields are required', () => {
     ContactUs_Page.setFirstName('Paco');
     ContactUs_Page.setLastName('Palotes');
     ContactUs_Page.clickSubmitButton();
-    ContactUs_Page.confirmUnsuccessfulSubmission();
+    expect(ContactUs_Page.unsuccessfulSumbissionHeaderText).to.have.string("Error: all fields are required");
   });
 });
